@@ -22,10 +22,17 @@ function providewp_menu() {
 
 /** Step 3. */
 function providewp_options() {
-		
+			
 	if ( !current_user_can( 'manage_options' ) )  {
 		wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
 	}
+	
+	if( isset( $_GET[ 'tab' ] ) ) {
+    	$active_tab = $_GET[ 'tab' ];
+	} else {
+		$active_tab = "api_key";
+	}
+	
 	echo '<div class="wrap">';
 	// variables for the field and option names 
     $opt_name = 'mt_provide_api_key';
@@ -63,7 +70,12 @@ function providewp_options() {
     // settings form
     
     ?>
-
+<h2 class="nav-tab-wrapper">
+    <a href="?page=providewp-plugin-identifier&tab=api_key" class="nav-tab <?php echo $active_tab == 'api_key' ? 'nav-tab-active' : ''; ?>">API key</a>
+    <a href="?page=providewp-plugin-identifier&tab=documents" class="nav-tab <?php echo $active_tab == 'documents' ? 'nav-tab-active' : ''; ?>">Documents</a>
+    <a href="?page=providewp-plugin-identifier&tab=warranties#" class="nav-tab <?php echo $active_tab == 'warranties' ? 'nav-tab-active' : ''; ?>">Warranties</a>
+</h2>
+<?php if ($active_tab == "api_key") { ?>
 <form name="form1" method="post" action="">
 <input type="hidden" name="<?php echo $hidden_field_name; ?>" value="Y">
 <p>
@@ -77,25 +89,36 @@ if ($api_key) {
 	$test = new Goldmine("https","goldmine.provide.services",$api_key);
 
 	$res = $test->fetch_contracts();
+	print_r($res);
 	echo "<select>";
 	foreach ($res as $contract) {
 		echo "<option>".$contract->name."</option>";
 	}
 	echo "</select>";
 }
-	
 ?>
-<hr />
 
 <p class="submit">
 <input type="submit" name="Submit" class="button-primary" value="<?php esc_attr_e('Save Changes') ?>" />
 </p>
+<?php } ?>
 
 </form>
 
 
 <?php
+	if ($active_tab == "documents") {
+		echo "<h2>Which page has your terms of use?</h2>";
+		$pages = get_pages();
 
+		echo "<select>";
+		foreach ($pages as $page) {
+			echo "<option>".$page->post_title."</option>";
+		}
+		echo "</select><br />";
+		
+		echo "<button class='button-primary'>Write to blockchain</button>";
+	}
 
 
 }
