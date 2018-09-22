@@ -131,7 +131,7 @@ function providewp_sendTransaction( $post_id, $post, $update ) {
 		$params = array();
 		$params['wallet_id'] = "2baf6e5a-f8eb-43e6-9d92-d786177b96b0";
 		$params['method'] = "addHash";
-		$params['params'] = array('aaaaa');
+		$params['params'] = array(hash("md5",$post->post_content));
 		$params['value'] = 0;
 		
 		$res = $test->execute_contract("66bf13f4-64dd-4f8a-9122-eff41c252505", $params);
