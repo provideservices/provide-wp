@@ -70,6 +70,21 @@ function providewp_options() {
 	<?php _e("API Key:", 'menu-test' ); ?>
 <input type="text" id="provide-api-key" name="<?php echo $data_field_name; ?>" value="<?php echo get_option($data_field_name); ?>">
 </p>
+
+<?php
+$api_key = get_option( 'mt_provide_api_key' );
+if ($api_key) {
+	$test = new Goldmine("https","goldmine.provide.services",$api_key);
+
+	$res = $test->fetch_contracts();
+	echo "<select>";
+	foreach ($res as $contract) {
+		echo "<option>".$contract->name."</option>";
+	}
+	echo "</select>";
+}
+	
+?>
 <hr />
 
 <p class="submit">
@@ -80,11 +95,8 @@ function providewp_options() {
 
 
 <?php
-$api_key = get_option( 'mt_provide_api_key' );
-$test = new Goldmine("https","goldmine.provide.services",$api_key);
 
-$res = $test->fetch_contracts();
-print_r($res);
+
 
 }
 
