@@ -1,0 +1,3 @@
+[submodule "lib/provide-php"]
+	path = lib/provide-php
+	url = https://github.com/web3devs/provide-php.git
