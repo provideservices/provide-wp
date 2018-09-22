@@ -28,9 +28,9 @@ function providewp_options() {
 	}
 	echo '<div class="wrap">';
 	// variables for the field and option names 
-    $opt_name = 'mt_favorite_color';
+    $opt_name = 'mt_provide_api_key';
     $hidden_field_name = 'mt_submit_hidden';
-    $data_field_name = 'mt_favorite_color';
+    $data_field_name = 'mt_provide_api_key';
 
     // Read in existing option value from database
     $opt_val = get_option( $opt_name );
@@ -64,8 +64,24 @@ function providewp_options() {
     
     ?>
 
+<form name="form1" method="post" action="">
+<input type="hidden" name="<?php echo $hidden_field_name; ?>" value="Y">
+<p>
+	<?php _e("API Key:", 'menu-test' ); ?>
+<input type="text" id="provide-api-key" name="<?php echo $data_field_name; ?>" value="<?php echo get_option($data_field_name); ?>">
+</p>
+<hr />
+
+<p class="submit">
+<input type="submit" name="Submit" class="button-primary" value="<?php esc_attr_e('Save Changes') ?>" />
+</p>
+
+</form>
+
+
 <?php
-$test = new Goldmine("https","goldmine.provide.services","eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7fSwiZXhwIjpudWxsLCJpYXQiOjE1Mzc1NTk1MzQsImp0aSI6ImY5ZGI1Mzc0LTM1OTktNDQwMi1hNTVjLWFlYTM0N2Y3ZWU0NyIsInN1YiI6ImFwcGxpY2F0aW9uOmFlOThhZWVjLWEzOGItNDhlOS04NDBiLWQ3MWM0NjE3Mjc0MCJ9.wIvhWyc0TwHC2oe4942FDFINsqrTDUqXn-3bnj75oSU");
+$api_key = get_option( 'mt_provide_api_key' );
+$test = new Goldmine("https","goldmine.provide.services",$api_key);
 
 $res = $test->fetch_contracts();
 print_r($res);
