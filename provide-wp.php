@@ -89,7 +89,7 @@ if ($api_key) {
 	$test = new Goldmine("https","goldmine.provide.services",$api_key);
 
 	$res = $test->fetch_contracts();
-	print_r($res);
+
 	echo "<select>";
 	foreach ($res as $contract) {
 		echo "<option>".$contract->name."</option>";
@@ -123,5 +123,23 @@ if ($api_key) {
 
 }
 
+
+function providewp_sendTransaction( $post_id, $post, $update ) {
+	$api_key = get_option( 'mt_provide_api_key' );
+	if ($api_key) {
+		$test = new Goldmine("https","goldmine.provide.services",$api_key);
+		$params = array();
+		$params['wallet_id'] = "2baf6e5a-f8eb-43e6-9d92-d786177b96b0";
+		$params['method'] = "addHash";
+		$params['params'] = array('aaaaa');
+		$params['value'] = 0;
+		
+		$res = $test->execute_contract("66bf13f4-64dd-4f8a-9122-eff41c252505", $params);
+	}
+
+	
+
+}
+add_action( 'save_post', 'providewp_sendTransaction', 10, 3 );
 
 ?>
